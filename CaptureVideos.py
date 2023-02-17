@@ -24,10 +24,10 @@ class Capturing:
  
         
     def start(self):
-        p1 = threading.Thread(target=self.local_video, args=(self.queue,"video1.mp4",self.light1),daemon=True)
-        p2 = threading.Thread(target=self.local_video, args=(self.queue,"video2.mp4",self.light2),daemon=True)
-        p3 = threading.Thread(target=self.local_video, args=(self.queue,"video3.mp4",self.light3),daemon=True)
-        p4 = threading.Thread(target=self.local_video, args=(self.queue,"video4.mp4",self.light4),daemon=True)
+        p1 = threading.Thread(target=self.local_video, args=("video1.mp4",self.light1),daemon=True)
+        p2 = threading.Thread(target=self.local_video, args=("video2.mp4",self.light2),daemon=True)
+        p3 = threading.Thread(target=self.local_video, args=("video3.mp4",self.light3),daemon=True)
+        p4 = threading.Thread(target=self.local_video, args=("video4.mp4",self.light4),daemon=True)
         p5 = threading.Thread(target=self.lightChanges, args=(self.queue,))
         
         p1.start()

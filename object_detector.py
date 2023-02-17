@@ -21,7 +21,7 @@ class Detector:
                 conf = df['confidence'][ind]
                 text = label + ' ' + str(conf.round(decimals=2))
                 cv2.rectangle(img, (x1, y1), (x2, y2), (255, 255, 0), 2)
-                cv2.putText(img, "Toplam Kisi Sayisi "+str(len(df.index)), (15, 50),
+                cv2.putText(img, "Current vehicle count"+str(len(df.index)), (15, 50),
                             cv2.FONT_HERSHEY_PLAIN, 2, (255, 0, 0), 3)
                 cv2.putText(img, text, (x1, y1 - 5),
                             cv2.FONT_HERSHEY_PLAIN, 2, (255, 255, 0), 2)

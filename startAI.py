@@ -1,8 +1,8 @@
 from CaptureVideos import Capturing
 
-deneme = Capturing()
+trafficManager = Capturing()
 
 
 
 if __name__ == '__main__':
-    deneme.start()
+    trafficManager.start()

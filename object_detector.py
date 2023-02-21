@@ -1,5 +1,6 @@
 import torch
 import cv2
+import numpy  as np
 
 
 
@@ -9,7 +10,8 @@ class Detector:
     model.cuda()
         
     def detect(self,img):
-            
+        if img is not None:
+            img = cv2.resize(img,(1000,650))
             result = self.model(img)
 
             df = result.pandas().xyxy[0]
@@ -27,3 +29,4 @@ class Detector:
                             cv2.FONT_HERSHEY_PLAIN, 2, (255, 255, 0), 2)
        
             return img , len(df.index)
+        return np.zeros((1000,650)), 0 

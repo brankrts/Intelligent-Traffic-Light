@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+        {% if queue != None %}
+        <h1>{{ queue.pop().getCount()}}</h1>
+         {% endif %}
+
+        
+        <div class="lights">
+            <div class="traffic-light">
+                <div class="red-light"></div>
+                <div class="yellow-light"></div>
+                <div class="green-light"></div>
+            </div>
+            <div class="light">
+                <h3 class="title">1. Yol</h3>
+                <img src="{{ url_for('video_feed',path = 'video1.mp4') }}" width="100%">
+            </div>
+        </div>
+        <div class="lights">
+            <div class="traffic-light">
+                <div class="red-light"></div>
+                <div class="yellow-light"></div>
+                <div class="green-light"></div>
+            </div>
+            <div class="light">
+                <h3 class="title">1. Yol</h3>
+                <img src="{{ url_for('video_feed',path = 'video2.mp4') }}" width="100%">
+            </div>
+        </div>
+        <div class="lights">
+            <div class="traffic-light">
+                <div class="red-light"></div>
+                <div class="yellow-light"></div>
+                <div class="green-light"></div>
+            </div>
+            <div class="light">
+                <h3 class="title">1. Yol</h3>
+                <img src="{{ url_for('video_feed',path = 'video3.mp4') }}" width="100%">
+            </div>
+        </div>
+        <div class="lights">
+            <div class="traffic-light">
+                <div class="red-light"></div>
+                <div class="yellow-light"></div>
+                <div class="green-light"></div>
+            </div>
+            <div class="light">
+                <h3 class="title">1. Yol</h3>
+                <img src="{{ url_for('video_feed',path = 'video4.mp4') }}" width="100%">
+            </div>
+        </div>
+    </div>
+</body>
+</html>

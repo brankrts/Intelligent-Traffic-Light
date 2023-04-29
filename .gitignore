@@ -1,0 +1,10 @@
+*.mp4
+*.pt
+*.pdf
+**/assets*
+**/yolov5*
+*.png
+*.jpeg
+*.jpg
+**/__pycache__*
+

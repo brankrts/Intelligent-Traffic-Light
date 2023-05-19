@@ -4,7 +4,6 @@ class LightQueue:
   
   def push(self, item):
     self.queue.append(item)
-    return self.queue
   
   def pop(self):
     item_0 = self.queue[0]

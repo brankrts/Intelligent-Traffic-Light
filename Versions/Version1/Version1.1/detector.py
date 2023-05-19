@@ -2,7 +2,7 @@ from torch.hub import load
 import cv2
 import numpy  as np
 from const_model import RoiModel
-from constants import TRUCK_WAITING_TIME,CAR_WAITING_TIME,MOTORCYCLE_WAITING_TIME,BUS_WAITING_TIME,TRUCK,CAR,MOTORCYCLE,BUS,MAIN_ROI
+from constants import TRUCK_WAITING_TIME,CAR_WAITING_TIME,MOTORCYCLE_WAITING_TIME,BUS_WAITING_TIME,TRUCK,CAR,MOTORCYCLE,BUS
 from colors import RED,GREEN,BLUE
 from shapely.geometry import Point
 from shapely.geometry.polygon import Polygon
@@ -19,15 +19,35 @@ class Detector:
     lineThickness = 2
     
     def __init__(self):
-        self.main_roi= RoiModel(MAIN_ROI)
         self.density = 0
        
-    def detect(self,img):
-        
+    def detect(self,img , roi):
+        self.main_roi = RoiModel(roi) 
         current_values = None
         current_values =dict(
      
-            main_roi = {
+            main_roi_1= {
+                'truck' : 0,
+                'car' : 0,
+                'bus' : 0,
+                'motorcycle' : 0,
+                'total_waiting_time' : 0
+            },
+            main_roi_2= {
+                'truck' : 0,
+                'car' : 0,
+                'bus' : 0,
+                'motorcycle' : 0,
+                'total_waiting_time' : 0
+            },
+            main_roi_3= {
+                'truck' : 0,
+                'car' : 0,
+                'bus' : 0,
+                'motorcycle' : 0,
+                'total_waiting_time' : 0
+            },
+            main_roi_4= {
                 'truck' : 0,
                 'car' : 0,
                 'bus' : 0,

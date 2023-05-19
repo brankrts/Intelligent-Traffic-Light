@@ -2,7 +2,6 @@ import cv2
 import threading
 from object_detector import Detector
 from Queue import LightQueue
-from multiprocessing import Process
 from traffic_light import TrafficLight
 from thread_pool import ThreadPool
 from connection import Connection

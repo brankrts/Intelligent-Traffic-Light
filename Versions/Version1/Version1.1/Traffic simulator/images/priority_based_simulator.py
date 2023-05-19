@@ -23,12 +23,20 @@ currentGreen = 0   # Indicates which signal is green
 nextGreen = (currentGreen+1) % noOfSignals
 currentYellow = 0   # Indicates whether yellow signal is on or off
 
+TRUCK_WAITING_TIME= 20
+CAR_WAITING_TIME = 10
+BUS_WAITING_TIME = 15
+MOTORCYCLE_WAITING_TIME= 10
+SCALE = 5
+
+
 # Average times for vehicles to pass the intersection
-carTime = 2
-bikeTime = 1
-rickshawTime = 2.25
-busTime = 2.5
-truckTime = 2.5
+carTime = CAR_WAITING_TIME/SCALE
+bikeTime = MOTORCYCLE_WAITING_TIME / SCALE
+rickshawTime = MOTORCYCLE_WAITING_TIME/SCALE
+busTime = BUS_WAITING_TIME / SCALE
+truckTime = TRUCK_WAITING_TIME / SCALE
+
 
 # Count of cars at a traffic signal
 noOfCars = 0
@@ -353,10 +361,10 @@ def setTime():
                 elif(vclass == 'rickshaw'):
                     noOfRickshaws += 1
 
-    greenTime = 10
+    greenTime =(noOfRickshaws * rickshawTime) + (noOfTrucks *truckTime) + (noOfCars * carTime) + (noOfBuses * busTime) +(noOfBikes * bikeTime)
     max_priority = max(signals, key=lambda x: x.priority)
     index = signals.index(max_priority)
-    print('Green Time: ', greenTime)
+    print('\nGreen Time: ', greenTime ,'------------------------------------------------->\n')
     if(greenTime < defaultMinimum):
         greenTime = defaultMinimum
     elif(greenTime > defaultMaximum):

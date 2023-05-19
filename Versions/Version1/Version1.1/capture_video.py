@@ -1,18 +1,16 @@
 import cv2
 import time
-import math
 import numpy as np
 from line_count_finder import LineCountFinder
 from contour_finder import LineContourFinder
-from roi_filter import ROIFilter
+from roi_filter import ROIFilter , RoiModel
 from detector import Detector
-from constants import MAIN_ROI
+from constants import MAIN_ROI1 ,MAIN_ROI2,MAIN_ROI3,MAIN_ROI4
 from colors import RED, GREEN
 from thread_pool import ThreadPool
 from traffic_light import TrafficLight
 from threading import Thread
 from custom_queue import Queue
-
 
 def stackImages(imgArray, scale):
 
@@ -36,7 +34,6 @@ def stackImages(imgArray, scale):
             hor[x] = np.hstack(imgArray[x])
             hor_con[x] = np.concatenate(imgArray[x])
         ver = np.vstack(hor)
-        ver_con = np.concatenate(hor)
 
     else:
         for x in range(0, rows):
@@ -66,21 +63,25 @@ class CaptureVideos:
             "light3" : np.zeros((400,400),dtype=np.uint8),
             "light4" : np.zeros((400,400) , dtype=np.uint8),
         }
-    def local_video(self, path, light: TrafficLight,index):
+
+    def local_video(self, path, light: TrafficLight,index,roi):
+
+        roi_model= RoiModel(roi)
+    
 
         cap = cv2.VideoCapture(path)
         prev_frame_time = 0
         new_frame_time = 0
-        finder = LineContourFinder(contour_threshold=200,
-                                   contour_distance=0, contour_area_threshold=50)
+        finder = LineContourFinder(contour_threshold=roi_model.contour_threshold,
+                                   contour_distance=roi_model.contour_distance, contour_area_threshold=roi_model.contour_area_threshold)
         lane_count = None
         
         ret, frame = cap.read() 
       
-        frame, window_size = ROIFilter().getFilteredImage(frame, MAIN_ROI)
+        frame, window_size = ROIFilter().getFilteredImage(frame, roi)
         contour_model = finder.get_all_values(window_size)
         count_finder = LineCountFinder(
-            contour_model=contour_model, min_y_threshold=5, max_y_threshold=50)
+            contour_model=contour_model, min_y_threshold=roi_model.min_y_threshold, max_y_threshold=roi_model.max_y_threshold)
 
         lane_count, model = count_finder.visualize()
 
@@ -98,7 +99,7 @@ class CaptureVideos:
             if ret:
                 fps = 1/(new_frame_time-prev_frame_time)
                 prev_frame_time = new_frame_time
-                frame, total_waiting_time, current_density = Detector().detect(frame)
+                frame, total_waiting_time, current_density = Detector().detect(frame,roi)
 
                 light.set_current_density(current_density)
                 light.set_green_time(total_waiting_time)
@@ -135,13 +136,17 @@ class CaptureVideos:
     def start(self):
 
         self.thread_pool.add_thread(Thread(target=self.local_video, args=(
-            "assets/video2.mp4", self.light1, 0), daemon=True))
+            "assets/video1.mp4", self.light1, 0,MAIN_ROI1), daemon=True))
+
         self.thread_pool.add_thread(Thread(target=self.local_video, args=(
-            "assets/video2.mp4", self.light2, 1), daemon=True))
+            "assets/video2.mp4", self.light2, 1,MAIN_ROI2), daemon=True))
+
         self.thread_pool.add_thread(Thread(target=self.local_video, args=(
-            "assets/video2.mp4", self.light3, 2), daemon=True))
+            "assets/video3.mp4", self.light3, 2,MAIN_ROI3), daemon=True))
+
         self.thread_pool.add_thread(Thread(target=self.local_video, args=(
-            "assets/video2.mp4", self.light4, 3), daemon=True))
+            "assets/video4.mp4", self.light4, 3,MAIN_ROI4), daemon=True))
+
         self.thread_pool.add_thread(Thread(target=self.light_changes, args=(self.queue,)))
         
         self.thread_pool.add_thread(Thread(target=self.join_cams))
@@ -162,7 +167,7 @@ class CaptureVideos:
             
             max_priority = max(queue.queue,key=lambda light:light.priority)
             for light in self.queue.queue:
-                print(f'{light.getName()} --> Oncelik degeri : {light.get_priority()/max_priority.priority:.6f}')
+                print(f'{light.getName()} --> Oncelik degeri : {light.get_priority()/max_priority.priority+0.1:.6f}')
             print("\n")
         
 
@@ -170,3 +175,4 @@ if __name__ == "__main__":
 
     capturing = CaptureVideos()
     capturing.start()
+    

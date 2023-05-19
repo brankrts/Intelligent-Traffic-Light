@@ -1,12 +1,6 @@
 from flask import Flask,render_template,Response
 import cv2
 from CaptureVideos import Capturing
-
-
-
-
-
-
 queue = None
 app = Flask(__name__)
 
